@@ -35,7 +35,7 @@ dependencies {
 	developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 
-	runtimeOnly "mysql:mysql-connector-java:${mySqlConnectorVersion}"
+	runtimeOnly 'org.postgresql:postgresql'
 
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 	compileOnly "org.projectlombok:lombok:${lombokVersion}"

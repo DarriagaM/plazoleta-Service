@@ -1,8 +1,8 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
-import com.pragma.powerup.application.dto.request.ObjectRequestDto;
-import com.pragma.powerup.application.dto.response.ObjectResponseDto;
-import com.pragma.powerup.application.handler.IObjectHandler;
+import com.pragma.powerup.application.dto.request.RestaurantRequestDto;
+import com.pragma.powerup.application.dto.response.RestaurantResponseDto;
+import com.pragma.powerup.application.handler.IRestaurantHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,36 +18,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/object")
+@RequestMapping("/restaurant")
 @RequiredArgsConstructor
-public class ObjectRestController {
+public class RestaurantRestController {
 
-    private final IObjectHandler objectHandler;
+    private final IRestaurantHandler restaurantHandler;
 
-    @Operation(summary = "Add a new object")
+    @Operation(summary = "Add a new restaurant")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Object created", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Object already exists", content = @Content)
+            @ApiResponse(responseCode = "201", description = "Restaurant created", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Restaurant already exists", content = @Content)
     })
     @PostMapping("/")
-    public ResponseEntity<Void> saveObject(@RequestBody ObjectRequestDto objectRequestDto) {
-        objectHandler.saveObject(objectRequestDto);
+    public ResponseEntity<Void> saveRestaurant(@Valid @RequestBody RestaurantRequestDto restaurantRequestDto) {
+        restaurantHandler.saveRestaurant(restaurantRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get all objects")
+    @Operation(summary = "Get all restaurants")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All objects returned",
+            @ApiResponse(responseCode = "200", description = "All restaurants returned",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ObjectResponseDto.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = RestaurantResponseDto.class)))),
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
     @GetMapping("/")
-    public ResponseEntity<List<ObjectResponseDto>> getAllObjects() {
-        return ResponseEntity.ok(objectHandler.getAllObjects());
+    public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants() {
+        return ResponseEntity.ok(restaurantHandler.getRequestRestaurantDtoList());
     }
 
 }
