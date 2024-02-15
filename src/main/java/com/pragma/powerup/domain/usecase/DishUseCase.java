@@ -27,18 +27,18 @@ public class DishUseCase implements IDishServicePort {
         if(restaurantPersistencePort.getRestaurantModelById(dishModel.getRestaurantModel().getId()) == null){
             throw  new DomainException("Restaurante no existe");
         }
-        validateUserOwnerRestaurant(dishModel.getRestaurantModel().getId());
+        validateUserOwnerRestaurant(dishModel.getRestaurantModel().getId(),"Solo el propietario puede crear platos");
 
         dishModel.setEstado(true);
         dishPersistencePort.saveDishModel(dishModel);
     }
 
-    public void validateUserOwnerRestaurant(Long idRestaurant){
+    public void validateUserOwnerRestaurant(Long idRestaurant, String message){
         RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurantModelById(idRestaurant);
         String bearerToken = token.getBearerToken();
         Long userAutenticatedId = token.getId(bearerToken);
         if(! (restaurantModel.getIdPropietario() == userAutenticatedId)){
-            throw new DomainException("Solo el propietario puede crear platos");
+            throw new DomainException(message);
         }
     }
 
@@ -55,5 +55,20 @@ public class DishUseCase implements IDishServicePort {
     @Override
     public void deleteDishById(Long id) {
         dishPersistencePort.deleteDishById(id);
+    }
+
+    @Override
+    public void updateDish(Long idDish, DishModel dishModel) {
+        DishModel dishModelToUpdate = dishPersistencePort.getDishById(idDish);
+
+        if(dishModelToUpdate == null){
+            throw new DomainException("no plato con el id");
+        }
+        validateUserOwnerRestaurant(dishModelToUpdate.getRestaurantModel().getId()
+                                    ,"solo el propietario puede actualizar platos");
+
+        dishModelToUpdate.setPrecio(dishModel.getPrecio());
+        dishModelToUpdate.setDescripcion((dishModel.getDescripcion()));
+        dishPersistencePort.saveDishModel(dishModelToUpdate);
     }
 }
