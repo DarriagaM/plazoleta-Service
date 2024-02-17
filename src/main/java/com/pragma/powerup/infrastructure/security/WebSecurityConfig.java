@@ -25,7 +25,7 @@ public class WebSecurityConfig {
         return  http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/restaurant/","/dish/").permitAll()
+                .antMatchers( ).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -38,5 +38,5 @@ public class WebSecurityConfig {
                 .build();
     }
 
-
+//"/restaurant/","/dish/"
 }

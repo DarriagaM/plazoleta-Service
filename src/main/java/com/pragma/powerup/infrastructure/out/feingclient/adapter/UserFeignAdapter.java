@@ -8,7 +8,7 @@ import com.pragma.powerup.infrastructure.out.feingclient.mapper.IUserFeignMapper
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UserFeingAdapter implements IUserFeignPort {
+public class UserFeignAdapter implements IUserFeignPort {
     private final IUserFeignClient userFeignClient;
     private final IUserFeignMapper userFeignMapper;
 

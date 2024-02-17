@@ -13,11 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -51,6 +47,16 @@ public class RestaurantRestController {
     @GetMapping("/")
     public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants() {
         return ResponseEntity.ok(restaurantHandler.getRequestRestaurantDtoList());
+    }
+
+    @Operation(summary = "Get restaurant by Id_Owner")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Restaurant returnet", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Restaurant not found", content = @Content)
+    })
+    @GetMapping("/restaurantByIdOwner/{idOwner}")
+    public ResponseEntity<RestaurantResponseDto> getRestaurantByIdOwner(@PathVariable(value = "idOwner") Long idOwner) {
+        return ResponseEntity.ok(restaurantHandler.getRequestRestaurantByIdOwner(idOwner));
     }
 
 }

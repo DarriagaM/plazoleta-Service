@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IRestaurantHandler {
     void saveRestaurant(RestaurantRequestDto restaurantRequestDto);
+    RestaurantResponseDto getRequestRestaurantByIdOwner(Long idOwner);
     RestaurantResponseDto getRequestRestaurantDtoById(Long id);
     List<RestaurantResponseDto> getRequestRestaurantDtoList();
     void deleteRequestRestaurantById(Long id);

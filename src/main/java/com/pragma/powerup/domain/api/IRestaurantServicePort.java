@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IRestaurantServicePort {
     void saveRestaurant(RestaurantModel restaurantModel);
+    RestaurantModel getRequestRestaurantByIdOwner(Long idOwner);
     RestaurantModel getRestaurantModelById(Long id);
     List<RestaurantModel> getAllRestaurantModelList();
     void deleteRestaurantById(Long id);

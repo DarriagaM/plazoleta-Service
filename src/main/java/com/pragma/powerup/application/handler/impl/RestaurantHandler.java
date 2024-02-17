@@ -26,6 +26,12 @@ public class RestaurantHandler implements IRestaurantHandler {
     }
 
     @Override
+    public RestaurantResponseDto getRequestRestaurantByIdOwner(Long idOwner) {
+        RestaurantModel restaurantModel = restaurantServicePort.getRequestRestaurantByIdOwner(idOwner);
+        return restaurantResponseMapper.toResponseRestaurantDto(restaurantModel);
+    }
+
+    @Override
     public RestaurantResponseDto getRequestRestaurantDtoById(Long id) {
         RestaurantModel restaurantModel = restaurantServicePort.getRestaurantModelById(id);
         return restaurantResponseMapper.toResponseRestaurantDto(restaurantModel);

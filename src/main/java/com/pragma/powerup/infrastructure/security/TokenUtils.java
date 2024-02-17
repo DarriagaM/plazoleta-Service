@@ -70,6 +70,7 @@ public class TokenUtils {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+
             String email = claims.getSubject();
             return new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
 
