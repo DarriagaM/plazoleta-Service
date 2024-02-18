@@ -1,5 +1,6 @@
 package com.pragma.powerup.domain.usecase;
 
+import com.pragma.powerup.domain.api.ICategoryServicePort;
 import com.pragma.powerup.domain.api.IDishServicePort;
 import com.pragma.powerup.domain.exception.DomainException;
 import com.pragma.powerup.domain.model.DishModel;
@@ -14,11 +15,13 @@ public class DishUseCase implements IDishServicePort {
     private final IDishPersistencePort dishPersistencePort;
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IToken token;
+    private final ICategoryServicePort categoryServicePort;
 
-    public DishUseCase(IDishPersistencePort dishPersistencePort, IRestaurantPersistencePort restaurantPersistencePort, IToken token) {
+    public DishUseCase(IDishPersistencePort dishPersistencePort, IRestaurantPersistencePort restaurantPersistencePort, IToken token, ICategoryServicePort categoryServicePort) {
         this.dishPersistencePort = dishPersistencePort;
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.token = token;
+        this.categoryServicePort = categoryServicePort;
     }
 
     @Override
@@ -27,6 +30,11 @@ public class DishUseCase implements IDishServicePort {
         if(restaurantPersistencePort.getRestaurantModelById(dishModel.getRestaurantModel().getId()) == null){
             throw  new DomainException("Restaurante no existe");
         }
+
+        if(categoryServicePort.getCategoryById(dishModel.getCategoria().getId()) == null){
+            throw  new DomainException("Categoria no existe");
+        }
+
         validateUserOwnerRestaurant(dishModel.getRestaurantModel().getId(),"Solo el propietario puede crear platos");
 
         dishModel.setEstado(true);

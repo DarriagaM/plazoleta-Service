@@ -27,8 +27,12 @@ public class DishEntity {
     private String descripcion;
     @Column(name = "url_imagen", nullable = false)
     private String urlImagen;
-    @Column(name = "categoria", nullable = false)
-    private String categoria;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "id_categoria")
+    private CategoryEntity categoria;
+
     @Column(name = "estado", nullable = false)
     private boolean estado;
 

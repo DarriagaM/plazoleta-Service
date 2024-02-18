@@ -22,8 +22,9 @@ public class DishRequestDto {
     private String descripcion;
     @NotBlank
     private String urlImagen;
-    @NotBlank
-    private String categoria;
+
+    @NotNull
+    private Long idCategoria;
 
     @NotNull
     @Min(value = 1)

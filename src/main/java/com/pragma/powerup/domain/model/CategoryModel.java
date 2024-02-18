@@ -5,16 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class DishModel {
+@NoArgsConstructor
+public class CategoryModel {
     private Long id;
     private String nombre;
-    private String precio;
     private String descripcion;
-    private String urlImagen;
-    private CategoryModel categoria;
-    private boolean estado;
-    private RestaurantModel restaurantModel;
 }
-

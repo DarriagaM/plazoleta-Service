@@ -1,25 +1,31 @@
 package com.pragma.powerup.infrastructure.configuration;
 
+import com.pragma.powerup.domain.api.ICategoryServicePort;
 import com.pragma.powerup.domain.api.IDishServicePort;
 import com.pragma.powerup.domain.api.IEmployeeServicePort;
 import com.pragma.powerup.domain.api.IRestaurantServicePort;
+import com.pragma.powerup.domain.spi.ICategoryPersistencePort;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.domain.spi.IEmployeePersistencePort;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
 import com.pragma.powerup.domain.spi.feignclient.IUserFeignPort;
 import com.pragma.powerup.domain.spi.token.IToken;
+import com.pragma.powerup.domain.usecase.CategoryUseCase;
 import com.pragma.powerup.domain.usecase.DishUseCase;
 import com.pragma.powerup.domain.usecase.EmployeeUseCase;
 import com.pragma.powerup.domain.usecase.RestaurantUseCase;
+import com.pragma.powerup.infrastructure.out.jpa.adapter.CategoryJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.DishJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.EmployeeJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.RestaurantJpaAdapter;
 import com.pragma.powerup.infrastructure.out.feingclient.IUserFeignClient;
 import com.pragma.powerup.infrastructure.out.feingclient.adapter.UserFeignAdapter;
 import com.pragma.powerup.infrastructure.out.feingclient.mapper.IUserFeignMapper;
+import com.pragma.powerup.infrastructure.out.jpa.mapper.ICategoryEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IEmployeeEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
+import com.pragma.powerup.infrastructure.out.jpa.repository.ICategoryRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IEmployeeRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
@@ -43,6 +49,8 @@ public class BeanConfiguration {
     private final IEmployeeEntityMapper employeeEntityMapper;
     private final IEmployeeRepository employeeRepository;
 
+    private final ICategoryEntityMapper categoryEntityMapper;
+    private final ICategoryRepository categoryRepository;
 
     @Bean
     public IEmployeePersistencePort employeePersistencePort(){
@@ -80,6 +88,17 @@ public class BeanConfiguration {
 
     @Bean
     public IDishServicePort dishServicePort(){
-        return new DishUseCase(dishPersistencePort(),restaurantPersistencePort(),token());
+        return new DishUseCase(dishPersistencePort(),restaurantPersistencePort(),token(),categoryServicePort());
     }
+
+    @Bean
+    public ICategoryPersistencePort categoryPersistencePort(){
+        return new CategoryJpaAdapter(categoryRepository,categoryEntityMapper);
+    }
+
+    @Bean
+    public ICategoryServicePort categoryServicePort(){
+        return new CategoryUseCase(categoryPersistencePort());
+    }
+
 }
