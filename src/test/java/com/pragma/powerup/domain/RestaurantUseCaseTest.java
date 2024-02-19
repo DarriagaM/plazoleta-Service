@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-public class RestaurantUseCaseTest {
+class RestaurantUseCaseTest {
 
     @InjectMocks
     RestaurantUseCase restaurantUseCase;
@@ -52,4 +52,5 @@ public class RestaurantUseCaseTest {
         assertEquals(restaurantModelSaved.getNit(), restaurantModel.getNit());
         assertEquals(restaurantModelSaved.getIdPropietario(), restaurantModel.getIdPropietario());
     }
+
 }

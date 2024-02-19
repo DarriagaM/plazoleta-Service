@@ -6,6 +6,7 @@ import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.model.UserModel;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
 import com.pragma.powerup.domain.spi.feignclient.IUserFeignPort;
+import com.pragma.powerup.domain.spi.token.IToken;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class RestaurantUseCase implements IRestaurantServicePort {
 
     @Override
     public void saveRestaurant(RestaurantModel restaurantModel) {
+
         if(!userFeignPort.existsUserById(restaurantModel.getIdPropietario())){
             throw  new DomainException("Usuario no existe");
         }
@@ -29,6 +31,8 @@ public class RestaurantUseCase implements IRestaurantServicePort {
         }
         restaurantPersistencePort.saveRestaurantModel(restaurantModel);
     }
+
+
 
     @Override
     public RestaurantModel getRequestRestaurantByIdOwner(Long idOwner) {

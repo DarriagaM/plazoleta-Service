@@ -1,5 +1,7 @@
 package com.pragma.powerup.factory;
 
+import com.pragma.powerup.domain.model.CategoryModel;
+import com.pragma.powerup.domain.model.DishModel;
 import com.pragma.powerup.domain.model.RestaurantModel;
 
 public class RestaurantTestData {
@@ -15,4 +17,40 @@ public class RestaurantTestData {
 
         return restaurantModel;
     }
+
+    public static DishModel getDish(){
+        DishModel dishModel = new DishModel();
+        dishModel.setId(1L);
+        dishModel.setNombre("kayeye");
+        dishModel.setPrecio("20");
+        dishModel.setDescripcion("descripcion");
+        dishModel.setUrlImagen("URL");
+        dishModel.setEstado(true);
+        dishModel.setRestaurantModel(getRestaurant());
+        dishModel.setCategoria(getCategory());
+        return  dishModel;
+    }
+
+    public static DishModel getDish2(){
+        DishModel dishModel = new DishModel();
+        dishModel.setId(2L);
+        dishModel.setNombre("tocomo");
+        dishModel.setPrecio("20");
+        dishModel.setDescripcion("Este es un major");
+        dishModel.setUrlImagen("https://ejemplo.com/imagen.png");
+        dishModel.setEstado(true);
+        dishModel.setRestaurantModel(getRestaurant());
+        dishModel.setCategoria(getCategory());
+        return  dishModel;
+    }
+
+    public static CategoryModel getCategory(){
+        CategoryModel categoryModel = new CategoryModel();
+        categoryModel.setId(1L);
+        categoryModel.setNombre("Vapor");
+        categoryModel.setDescripcion("Comida al humo hahahaa");
+        return categoryModel;
+    }
+
+
 }
