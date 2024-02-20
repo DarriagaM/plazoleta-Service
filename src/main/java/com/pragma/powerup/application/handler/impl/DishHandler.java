@@ -1,5 +1,6 @@
 package com.pragma.powerup.application.handler.impl;
 
+import com.pragma.powerup.application.dto.request.DishOnOffRequestDto;
 import com.pragma.powerup.application.dto.request.DishRequestDto;
 import com.pragma.powerup.application.dto.request.DishUpdateRequestDto;
 import com.pragma.powerup.application.dto.response.DishResponseDto;
@@ -43,6 +44,11 @@ public class DishHandler implements IDishHandler {
     @Override
     public void deleteDish(Long id) {
         dishServicePort.deleteDishById(id);
+    }
+
+    @Override
+    public void SetOnOff(DishOnOffRequestDto dishOnOff) {
+        dishServicePort.setOnOff(dishOnOff.getId(),dishOnOff.isEstado());
     }
 
     @Override

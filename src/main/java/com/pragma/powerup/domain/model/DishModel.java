@@ -1,10 +1,13 @@
 package com.pragma.powerup.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DishModel {
@@ -13,8 +16,8 @@ public class DishModel {
     private String precio;
     private String descripcion;
     private String urlImagen;
-    private CategoryModel categoria;
     private boolean estado;
+    private CategoryModel categoria;
     private RestaurantModel restaurantModel;
 }
 

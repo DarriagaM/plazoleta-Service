@@ -1,5 +1,6 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
+import com.pragma.powerup.application.dto.request.DishOnOffRequestDto;
 import com.pragma.powerup.application.dto.request.DishRequestDto;
 import com.pragma.powerup.application.dto.request.DishUpdateRequestDto;
 import com.pragma.powerup.application.dto.response.DishResponseDto;
@@ -62,5 +63,20 @@ public class  DishRestController {
     @GetMapping("/")
     public ResponseEntity<List<DishResponseDto>> getAllDishes() {
         return ResponseEntity.ok(dishHandler.getDishResponseDtoList());
+    }
+
+
+    @Operation(summary = "Active/Inactive dish by Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dish updated",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = DishOnOffRequestDto.class)))),
+            @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
+    })
+    @PutMapping("/dishOnOff/")
+    @PreAuthorize("hasAuthority('PROPIETARIO')")
+    public ResponseEntity<DishRequestDto> setOnOff(@Valid @RequestBody DishOnOffRequestDto dishOnOff){
+        dishHandler.SetOnOff(dishOnOff);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

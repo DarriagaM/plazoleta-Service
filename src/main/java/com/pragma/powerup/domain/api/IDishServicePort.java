@@ -10,4 +10,6 @@ public interface IDishServicePort {
     List<DishModel> getADishModelList();
     void deleteDishById(Long id);
     void updateDish(Long idDish, DishModel dishModel);
+    
+    void setOnOff(Long id, boolean activeOrInactive);
 }

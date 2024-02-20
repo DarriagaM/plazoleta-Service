@@ -41,15 +41,6 @@ public class DishUseCase implements IDishServicePort {
         dishPersistencePort.saveDishModel(dishModel);
     }
 
-    public void validateUserOwnerRestaurant(Long idRestaurant, String message){
-        RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurantModelById(idRestaurant);
-        String bearerToken = token.getBearerToken();
-        Long userAutenticatedId = token.getId(bearerToken);
-        if(! (restaurantModel.getIdPropietario() == userAutenticatedId)){
-            throw new DomainException(message);
-        }
-    }
-
     @Override
     public DishModel getDishById(Long id) {
         return dishPersistencePort.getDishById(id);
@@ -67,16 +58,40 @@ public class DishUseCase implements IDishServicePort {
 
     @Override
     public void updateDish(Long idDish, DishModel dishModel) {
-        DishModel dishModelToUpdate = dishPersistencePort.getDishById(idDish);
+        DishModel dishModelToUpdate = getDish(idDish);
 
-        if(dishModelToUpdate == null){
-            throw new DomainException("no plato con el id");
-        }
         validateUserOwnerRestaurant(dishModelToUpdate.getRestaurantModel().getId()
                                     ,"solo el propietario puede actualizar platos");
 
         dishModelToUpdate.setPrecio(dishModel.getPrecio());
         dishModelToUpdate.setDescripcion((dishModel.getDescripcion()));
         dishPersistencePort.saveDishModel(dishModelToUpdate);
+    }
+
+    @Override
+    public void setOnOff(Long idDish, boolean activeOrInactive) {
+        DishModel dishModelSetOnOff = getDish(idDish);
+        validateUserOwnerRestaurant(dishModelSetOnOff.getRestaurantModel().getId()
+                                    ,"Solo propietario del restaurante puede desactivar/activar platos");
+
+        dishModelSetOnOff.setEstado(activeOrInactive);
+        dishPersistencePort.saveDishModel(dishModelSetOnOff);
+    }
+
+    public DishModel getDish(Long idDish){
+        DishModel dishModel = dishPersistencePort.getDishById(idDish);
+        if(dishModel == null){
+            throw new DomainException("no plato con el id");
+        }
+        return dishModel;
+    }
+
+    public void validateUserOwnerRestaurant(Long idRestaurant, String message){
+        RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurantModelById(idRestaurant);
+        String bearerToken = token.getBearerToken();
+        Long userAutenticatedId = token.getId(bearerToken);
+        if(! (restaurantModel.getIdPropietario() == userAutenticatedId)){
+            throw new DomainException(message);
+        }
     }
 }

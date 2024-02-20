@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
@@ -38,7 +39,7 @@ class DishUseCaseTest {
     private ICategoryServicePort categoryServicePort;
 
     @Test
-    void mustSaveADish() {
+    void mustSaveDish() {
         RestaurantModel restaurantModel = RestaurantTestData.getRestaurant();
         CategoryModel categoryModel = RestaurantTestData.getCategory();
         DishModel dishModel = RestaurantTestData.getDish();
@@ -78,5 +79,43 @@ class DishUseCaseTest {
 
         assertThrows(DomainException.class, () -> dishUseCase.saveDishModel(dishModel));
     }
+
+    @Test
+    void mustUpdateDish() {
+        DishModel dishModel = RestaurantTestData.getDish();
+        DishModel dishModel2 = RestaurantTestData.getDish2();
+        RestaurantModel restaurantModel = RestaurantTestData.getRestaurant();
+
+        Mockito.when(dishPersistencePort.getDishById(dishModel.getId())).thenReturn(dishModel2);
+        Mockito.when(token.getBearerToken()).thenReturn("Bearer Token");
+        Mockito.when(token.getId("Bearer Token")).thenReturn(1L);
+        Mockito.when(restaurantPersistencePort.getRestaurantModelById(dishModel2.getRestaurantModel().getId())).thenReturn(restaurantModel);
+
+        dishUseCase.updateDish(dishModel.getId(), dishModel);
+
+        Mockito.verify(dishPersistencePort, Mockito.times(1)).saveDishModel(dishModel2);
+        assertEquals(dishModel.getDescripcion(), dishModel2.getDescripcion());
+        assertEquals(dishModel.getPrecio(), dishModel2.getPrecio());
+    }
+
+    @Test
+    void mustSetOnOff() {
+        DishModel dishModel = RestaurantTestData.getDish();
+        RestaurantModel restaurantModel = RestaurantTestData.getRestaurant();
+        boolean activeOrInactive = false;
+
+        Mockito.when(dishPersistencePort.getDishById(1L)).thenReturn(dishModel);
+        Mockito.when(token.getBearerToken()).thenReturn("Bearer Token");
+        Mockito.when(token.getId("Bearer Token")).thenReturn(1L);
+        Mockito.when(restaurantPersistencePort.getRestaurantModelById(dishModel.getRestaurantModel().getId())).thenReturn(restaurantModel);
+
+        dishUseCase.setOnOff(dishModel.getId(), activeOrInactive);
+
+
+        Mockito.verify(dishPersistencePort, Mockito.times(1)).saveDishModel(dishModel);
+        assertEquals(false, dishModel.isEstado());
+    }
+
+
 
 }
