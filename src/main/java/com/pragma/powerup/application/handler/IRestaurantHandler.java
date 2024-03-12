@@ -1,6 +1,7 @@
 package com.pragma.powerup.application.handler;
 
 import com.pragma.powerup.application.dto.request.RestaurantRequestDto;
+import com.pragma.powerup.application.dto.response.RestaurantPaginationResponseDto;
 import com.pragma.powerup.application.dto.response.RestaurantResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -13,4 +14,6 @@ public interface IRestaurantHandler {
     RestaurantResponseDto getRequestRestaurantDtoById(Long id);
     List<RestaurantResponseDto> getRequestRestaurantDtoList();
     void deleteRequestRestaurantById(Long id);
+    List<RestaurantPaginationResponseDto> getRestaurantsWithPagination(Integer  page, Integer  size);
+
 }

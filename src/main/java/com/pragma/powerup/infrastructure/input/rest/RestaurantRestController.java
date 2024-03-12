@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
 import com.pragma.powerup.application.dto.request.RestaurantRequestDto;
+import com.pragma.powerup.application.dto.response.RestaurantPaginationResponseDto;
 import com.pragma.powerup.application.dto.response.RestaurantResponseDto;
 import com.pragma.powerup.application.handler.IRestaurantHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -58,5 +59,19 @@ public class RestaurantRestController {
     public ResponseEntity<RestaurantResponseDto> getRestaurantByIdOwner(@PathVariable(value = "idOwner") Long idOwner) {
         return ResponseEntity.ok(restaurantHandler.getRequestRestaurantByIdOwner(idOwner));
     }
+
+    @Operation(summary = "Get all restaurants with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All restaurants returned paginated",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = RestaurantPaginationResponseDto.class)))),
+            @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
+    })
+    @GetMapping("/page/{page}/size/{size}")
+    @PreAuthorize("hasAuthority('CLIENTE')")
+    public ResponseEntity<List<RestaurantPaginationResponseDto>> getAllRestaurantsPagination(@PathVariable(value = "page" )Integer page, @PathVariable(value = "size") Integer size) {
+        return ResponseEntity.ok(restaurantHandler.getRestaurantsWithPagination(page,size));
+    }
+
 
 }

@@ -10,5 +10,6 @@ public interface IRestaurantServicePort {
     RestaurantModel getRestaurantModelById(Long id);
     List<RestaurantModel> getAllRestaurantModelList();
     void deleteRestaurantById(Long id);
+    List<RestaurantModel> getRestaurantsWithPagination(Integer page,Integer size);
 
 }

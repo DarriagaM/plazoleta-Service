@@ -53,4 +53,9 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     public void deleteRestaurantById(Long id) {
         restaurantPersistencePort.deleteRestaurantModelById(id);
     }
+
+    @Override
+    public List<RestaurantModel> getRestaurantsWithPagination(Integer page, Integer size) {
+        return restaurantPersistencePort.getRestaurantsWithPagination(page,size);
+    }
 }
